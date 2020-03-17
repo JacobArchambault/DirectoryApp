@@ -1,41 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.IO;
+using static System.Console;
+using static System.IO.Directory;
 
 namespace DirectoryApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.WriteLine("***** Fun with Directory(Info) *****\n");
+            WriteLine("***** Fun with Directory(Info) *****\n");
             ShowWindowsDirectoryInfo();
             DisplayImageFiles();
             ModifyAppDirectory();
             FunWithDirectoryType();
-            Console.ReadLine();
+            ReadLine();
         }
 
-        #region Display basic info about C:\Windows
         static void ShowWindowsDirectoryInfo()
         {
             // Dump directory information.
             DirectoryInfo dir = new DirectoryInfo(@"C:\Windows");
-            Console.WriteLine("***** Directory Info *****");
-            Console.WriteLine("FullName: {0}", dir.FullName);
-            Console.WriteLine("Name: {0}", dir.Name);
-            Console.WriteLine("Parent: {0}", dir.Parent);
-            Console.WriteLine("Creation: {0}", dir.CreationTime);
-            Console.WriteLine("Attributes: {0}", dir.Attributes);
-            Console.WriteLine("Root: {0}", dir.Root);
-            Console.WriteLine("**************************\n");
+            WriteLine("***** Directory Info *****");
+            WriteLine($"Full name: {dir.FullName}");
+            WriteLine($"Name: {dir.Name}");
+            WriteLine($"Parent: {dir.Parent}");
+            WriteLine($"Creation: {dir.CreationTime}");
+            WriteLine($"Attributes: {dir.Attributes}");
+            WriteLine($"Root: {dir.Root}");
+            WriteLine("**************************\n");
         }
-        #endregion
 
-        #region Display info on JPG files
         static void DisplayImageFiles()
         {
             DirectoryInfo dir = new DirectoryInfo(@"C:\Windows\Web\Wallpaper");
@@ -43,22 +37,20 @@ namespace DirectoryApp
             FileInfo[] imageFiles = dir.GetFiles("*.jpg", SearchOption.AllDirectories);
 
             // How many were found?
-            Console.WriteLine("Found {0} *.jpg files\n", imageFiles.Length);
+            WriteLine($"Found {imageFiles.Length} *.jpg files\n");
 
             // Now print out info for each file.
             foreach (FileInfo f in imageFiles)
             {
-                Console.WriteLine("***************************");
-                Console.WriteLine("File name: {0}", f.Name);
-                Console.WriteLine("File size: {0}", f.Length);
-                Console.WriteLine("Creation: {0}", f.CreationTime);
-                Console.WriteLine("Attributes: {0}", f.Attributes);
-                Console.WriteLine("***************************\n");
+                WriteLine("***************************");
+                WriteLine($"File name: {f.Name}");
+                WriteLine($"File size: {f.Length}");
+                WriteLine($"Creation: {f.CreationTime}");
+                WriteLine($"Attributes: {f.Attributes}");
+                WriteLine("***************************\n");
             }
         }
-        #endregion
 
-        #region Modify directory structure
         static void ModifyAppDirectory()
         {
             DirectoryInfo dir = new DirectoryInfo(".");
@@ -70,36 +62,32 @@ namespace DirectoryApp
             DirectoryInfo myDataFolder = dir.CreateSubdirectory(@"MyFolder2\Data");
 
             // Prints path to ..\MyFolder2\Data.
-            Console.WriteLine("New Folder is: {0}", myDataFolder);
+            WriteLine($"New Folder is: {myDataFolder}");
         }
-        #endregion
 
-        #region Use Directory class
         static void FunWithDirectoryType()
         {
             // List all drives on current computer.
-            string[] drives = Directory.GetLogicalDrives();
-            Console.WriteLine("Here are your drives:");
+            string[] drives = GetLogicalDrives();
+            WriteLine("Here are your drives:");
             foreach (string s in drives)
-                Console.WriteLine("--> {0} ", s);
+                WriteLine($"--> {s} ");
 
             // Delete what was created.
-            Console.WriteLine("Press Enter to delete directories");
-            Console.ReadLine();
+            WriteLine("Press Enter to delete directories");
+            ReadLine();
             try
             {
-                Directory.Delete(@"C:\MyFolder");
+                Delete(@"C:\MyFolder");
 
                 // The second parameter specifies whether you
                 // wish to destroy any subdirectories.
-                Directory.Delete(@"C:\MyFolder2", true);
+                Delete(@"C:\MyFolder2", true);
             }
             catch (IOException e)
             {
-                Console.WriteLine(e.Message);
+                WriteLine(e.Message);
             }
         }
-        #endregion
-
     }
 }
